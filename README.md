@@ -1,3 +1,3 @@
 # colore_combined
-some combined ontologies from colore
+usage and combination of some ontologies from colore
  
