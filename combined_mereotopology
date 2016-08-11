@@ -1,0 +1,147 @@
+
+(cl-text http://colore.oor.net/mereology/m_mereology.clif
+
+(forall (x)
+	(part x x))
+
+(forall (x y)
+        (if     (and	(part x y)
+			(part y x))
+		(= x y)))
+
+(forall (x y z)
+        (if     (and    (part x y)
+                        (part y z))
+                (part x z)))
+
+)
+
+****************************************************************
+
+(cl-text http://colore.oor.net/mereotopology/connection.clif
+
+(cl-comment "C1: Reflexivity")
+
+(forall (x) 
+	(C x x))
+
+(cl-comment "C2: Symmetry")
+
+(forall (x y)
+    (if (C x y)
+        (C y x)))
+        
+)
+
+****************************************************************
+
+(cl-text http://colore.oor.net/combined_mereotopology/mt.clif
+
+(cl-imports http://colore.oor.net/mereotopology/connection.clif)
+
+(cl-imports http://colore.oor.net/mereology/m_mereology.clif)
+
+(forall (x y)
+	(if	(part x y)
+		(forall (z)
+			(if	(C x z)
+				(C z y)))))
+
+)
+
+****************************************************************
+
+(cl-text  http://colore.oor.net/mereology/mereology_def.clif
+
+(cl-imports http://colore.oor.net/mereology/m_mereology.clif)
+
+(forall (x y)
+(iff    (underlaps x y)
+        (exists (z)
+                (and    (part x z)
+                        (part y z)))))
+                        
+                        
+
+****************************************************************
+
+(cl-text  http://colore.oor.net/combined_mereotopology/definitions/mt_def.clif
+
+(cl-imports  http://colore.oor.net/combined_mereotopology/mt.clif)
+
+(cl-imports  http://colore.oor.net/mereology/definitions/mereology_def.clif)
+
+(forall (x)
+	(iff	(SC x)
+		(forall (y z)
+			(if	(forall (w)
+					(iff	(overlaps w x)
+						(or	(overlaps w y)
+							(overlaps w z))))
+				(C y z)))))
+
+****************************************************************
+
+(cl-text http://colore.oor.net/mereology/prod_mereology.clif
+
+(cl-imports http://colore.oor.net/mereology/m_mereology.clif)
+
+(cl-imports http://colore.oor.net/mereology/definitions/mereology_def.clif)
+
+(cl-comment "Product")
+(forall (x y)
+	(if	(overlaps x y)
+		(exists (z)
+			(forall (v)
+				(iff	(ppart v z)
+					(and	(ppart v x)
+						(ppart v y)))))))
+
+)
+
+****************************************************************
+
+(cl-text http://colore.oor.net/mereology/sum_mereology.clif
+
+(cl-imports http://colore.oor.net/mereology/m_mereology.clif)
+
+(cl-imports http://colore.oor.net/mereology/definitions/mereology_def.clif)
+
+(cl-comment "Sum")
+(forall (x y)
+	(if	(underlaps x y)
+		(exists (z)
+			(forall (v)
+				(iff	(overlaps v z)
+					(or	(overlaps v x)
+						(overlaps v y)))))))
+
+)
+
+****************************************************************
+
+(cl-text http://colore.oor.net/mereology/cm_mereology.clif
+
+(cl-imports http://colore.oor.net/mereology/sum_mereology.clif)
+
+(cl-imports http://colore.oor.net/mereology/prod_mereology.clif)
+
+)
+
+****************************************************************
+
+(cl-text http://colore.oor.net/combined_mereotopology/cmt.clif
+
+(cl-imports http://colore.oor.net/combined_mereotopology/mt.clif)
+
+(cl-imports http://colore.oor.net/combined_mereotopology/definitions/mt.clif)
+
+(cl-imports http://colore.oor.net/mereology/definitions/mereology_def.clif)
+
+(cl-imports http://colore.oor.net/mereology/cm_mereology)
+
+(forall (x y)
+	(if	(C x y)
+		(underlaps x y)))
+
+)
